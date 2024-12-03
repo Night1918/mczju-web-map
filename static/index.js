@@ -64,7 +64,7 @@ AMapLoader
                         autoMove: true,
                         closeWhenClickMap: true,
                     });
-                    polygon.on("mouseover", () => {
+                    polygon.on("click", () => {
                         infoWindow.open(map);
                     });
                     map.add(polygon);
