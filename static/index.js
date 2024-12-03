@@ -19,7 +19,7 @@ AMapLoader
             layers: [layer],
         });
         const imageLayer = new AMap.ImageLayer({
-            url: "/static/map.png",
+            url: "https://resource.night1918.top/file/map.png",
             bounds: new AMap.Bounds([120.0622, 30.29285], [120.0954, 30.3145]),
             zIndex: 2,
             zooms: [12, 20],
