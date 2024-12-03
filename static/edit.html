@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/jpeg" href="/static/favicon.jpg">
+    <title>编辑页面</title>
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+        async function loadData() {
+            const id = getQueryParam("id");
+            document.getElementById("id").value = id;
+            const response = await fetch(`/api/get/${id}`);
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById("name").value = data.name;
+                document.getElementById("info").value = data.info;
+                document.getElementById("status").value = data.status;
+                document.getElementById("detail").value = data.detail;
+                document.getElementById("color").value = data.color;
+            } else {
+                alert("错误:ID不存在");
+            }
+        }
+        async function updateData() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const id = document.getElementById("id").value;
+            const name = document.getElementById("name").value;
+            const info = document.getElementById("info").value;
+            const status = document.getElementById("status").value;
+            const detail = document.getElementById("detail").value;
+            const color = document.getElementById("color").value;
+            const response = await fetch('/api/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password, id, name, info, status, detail, color })
+            });
+            if (response.ok) {
+                const result = await response.json();
+                alert(result.message);
+                window.location.href = "/";
+            } else {
+                const error = await response.json();
+                alert(error.message || "未知错误");
+            }
+        }
+        window.onload = loadData;
+    </script>
+</head>
+<body>
+<h1>编辑</h1>
+<form onsubmit="event.preventDefault(); updateData();">
+    <label for="id">区域ID:</label>
+    <input type="number" id="id" readonly /><br /><br />
+    <label for="name">名称:</label>
+    <textarea id="name" required></textarea><br /><br />
+    <label for="info">信息:</label>
+    <textarea id="info"></textarea><br /><br />
+    <label for="status">状态:</label>
+    <textarea id="status"></textarea><br /><br />
+    <label for="detail">备注:</label>
+    <textarea id="detail"></textarea><br /><br />
+    <label for="color">颜色:</label>
+    <textarea id="color" required></textarea><br /><br />
+    <strong>凭据</strong>
+    <br />
+    <label for="username">账号:</label>
+    <input type="text" id="username" required/><br /><br />
+    <label for="password">密码:</label>
+    <input type="password" id="password" required/><br /><br />
+    <button type="submit">提交</button>
+</form>
+</body>
+</html>
